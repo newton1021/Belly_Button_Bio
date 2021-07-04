@@ -4,39 +4,31 @@ var dataset = {}
 
 var datafile = "./samples.json";
 selectID = d3.select('#selDataset')
+
 d3.json(datafile).then(data => {
 	dataset = data;
 	var names = data.names.map((d,i) => {
 		selectID.append('option')
 		.attr("value", i)
 		.text(d)
-	});
-	//	var samples = data.samples.map(d => {
-	//		var id = d.id;
-	//		var otu_ids = d.otu_ids;
-	//		var sampleValues = d.sample_values;
-	//		var otu_labels = d.otu_labels;
-	//		
-	//		
-	//		console.log(id);
-	//		console.log(otu_ids);
-	//		console.log(sampleValues);
-	//		console.log(otu_labels);
-	//	});
-	//	
-	//	var metadata = data.metadata.map(d => d);
-	
+	});	
+	optionChanged(0)
 });
+
+
 
 function zip(A,B,C) {
 	return A.map((a,i) => [a,B[i],C[i]])
 }
 
 function optionChanged(index) {
+	
+	console.log(`Changing index to ${index}`);
+	
 	var subject = dataset.names[index];
 	var sample =  dataset.samples[index];
 	var metadata = dataset.metadata[index];
-	console.log(metadata);
+	
 	
 	d3.select('#demoInfo')
 	.selectAll("tr").remove()
@@ -71,7 +63,7 @@ function optionChanged(index) {
 		top10_labels.push(sorted[i][2]);
 	}
 	
-	console.log(top10_ids)
+	
 	
 	
 	trace = {
@@ -107,13 +99,8 @@ function optionChanged(index) {
 	
 	
 	Plotly.newPlot('bubble', [trace2], layout2)
-	console.log(colors)
-	console.log(sample)
-	console.log(metadata)
-	
 	var wfreq = parseInt(metadata['wfreq']);
-	console.log(wfreq)
-		
+			
 	// gauge
 	var trace3 = {
 		value: wfreq,
@@ -131,26 +118,4 @@ function optionChanged(index) {
 	Plotly.newPlot('gauge', [trace3], layout3);
 }
 
-
-//		Create a horizontal bar chart with a dropdown menu to display the top 10 OTUs found in that individual.
-//		
-//		Use sample_values as the values for the bar chart.
-//		
-//		Use otu_ids as the labels for the bar chart.
-//		
-//		Use otu_labels as the hovertext for the chart.
-//		
-//		bar Chart
-//		
-//		Create a bubble chart that displays each sample.
-//		
-//		Use otu_ids for the x values.
-//		
-//		Use sample_values for the y values.
-//		
-//		Use sample_values for the marker size.
-//		
-//		Use otu_ids for the marker colors.
-//		
-//		Use otu_labels for the text values.
 
